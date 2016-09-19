@@ -56,7 +56,14 @@
 
 % Formatting numbers
 \RequirePackage{siunitx}
-\sisetup{round-integer-to-decimal, group-separator={,}}
+\sisetup{
+%	round-integer-to-decimal, 
+%	group-separator={,}
+    group-separator = {.},
+    round-mode = places,
+    round-precision = 2,
+    output-decimal-marker = {,}
+}
 
 \RequirePackage{fontspec}
 
@@ -92,7 +99,7 @@
     \begin{minipage}[t]{.6\linewidth} {\headerStyle #1} \end{minipage}
     \hfill
     \begin{tabular}[t]{@{} c @{}}
-        {\headerStyle \invoiceSpacing{INVOICE} \##2} \\
+        {\headerStyle \invoiceSpacing{xxx} \##2} \\
         {\color{subduedColor} \today}
     \end{tabular}
 
@@ -136,11 +143,11 @@
     \begin{longtable}{c @{\hspace{1.5em}} p{.6\textwidth} r @{} l r r}
     \hline
     \noalign{\smallskip}
-    {\itemizationHeaderStyle Date} &
-    {\itemizationHeaderStyle Description} &
-    \multicolumn{2}{l}{\itemizationHeaderStyle Hours} &
-    {\itemizationHeaderStyle Rate} &
-    {\itemizationHeaderStyle Amount}
+    {\itemizationHeaderStyle Datum} &
+    {\itemizationHeaderStyle Beschreibung} &
+    \multicolumn{2}{l}{\itemizationHeaderStyle Stunden} &
+    {\itemizationHeaderStyle Einzel} &
+    {\itemizationHeaderStyle Gesamt}
     \\
     \noalign{\smallskip}
     \hline
@@ -161,12 +168,12 @@
     \begin{longtable}{c c @{\hspace{1.5em}} p{.5\textwidth} r @{} l r r}
     \hline
     \noalign{\smallskip}
-    {\itemizationHeaderStyle Date} &
-    {\itemizationHeaderStyle Project} &
-    {\itemizationHeaderStyle Description} &
-    \multicolumn{2}{l}{\itemizationHeaderStyle Hours} &
-    {\itemizationHeaderStyle Rate} &
-    {\itemizationHeaderStyle Amount}
+    {\itemizationHeaderStyle Datum} &
+    {\itemizationHeaderStyle Projekt} &
+    {\itemizationHeaderStyle Beschreibung} &
+    \multicolumn{2}{l}{\itemizationHeaderStyle Stunden} &
+    {\itemizationHeaderStyle Einzel} &
+    {\itemizationHeaderStyle Gesamt}
     \\
     \noalign{\smallskip}
     \hline
@@ -222,8 +229,8 @@
     \end{minipage} &
     {\itemizationRowStyle \@formatHoursLeft{#2}} &
     {\itemizationRowStyle \@formatHoursRight{#2}} &
-    {\itemizationRowStyle \currencysym#3} &
-    {\itemizationRowStyle \currencysym\calcamount{#2}{#3}}
+    {\itemizationRowStyle #3 \currencysym} &
+    {\itemizationRowStyle \calcamount{#2}{#3} \currencysym}
     \\
     \noalign{\medskip}
 }
@@ -236,8 +243,8 @@
     \end{minipage} &
     {\itemizationRowStyle \@formatHoursLeft{#2}} &
     {\itemizationRowStyle \@formatHoursRight{#2}} &
-    {\itemizationRowStyle \currencysym#3} &
-    {\itemizationRowStyle \currencysym\calcamount{#2}{#3}}
+    {\itemizationRowStyle #3 \currencysym} &
+    {\itemizationRowStyle \calcamount{#2}{#3} \currencysym}
     \\
     \noalign{\medskip}
 }
@@ -262,7 +269,7 @@
 }
 
 \newcommand*{\formatcurrency}[1]{%
-    \num[group-separator={,}, group-minimum-digits=3, round-mode=places, round-precision=2]{#1}%
+    \num[group-minimum-digits=3, round-mode=places, round-precision=2]{#1}%
 }
 
 % Implementation by Werner (http://tex.stackexchange.com/a/176815/35707)
