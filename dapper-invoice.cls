@@ -2,10 +2,13 @@
 
 \ProvidesClass{dapper-invoice}[2015/04/12]
 \NeedsTeXFormat{LaTeX2e}
-\LoadClass[11pt]{article}
+\LoadClass[11pt]{scrlttr2}
 
 % For page number calculations
 \RequirePackage{ifthen}
+
+% i18n
+\RequirePackage{babel}
 
 % To handle key=value options in class definition
 \RequirePackage{kvoptions}
@@ -23,7 +26,7 @@
 \ifthenelse{\equal{\dapper@currency}{pound}}{\newcommand{\currencysym}{\textsterling}}{}
 
 % Set the standard geometry
-\RequirePackage[hmargin=.75in,vmargin=1in]{geometry}
+\RequirePackage[hmargin=25mm,vmargin=27mm]{geometry}
 
 % For links and metadata
 \RequirePackage[hidelinks]{hyperref}
@@ -224,9 +227,7 @@
 
 \newcommand{\lineitem}[4]{
     {\itemizationRowStyle #1} &
-    \begin{minipage}[t]{.6\textwidth}
-        \begin{itemize}[leftmargin=0pt, labelsep=1pt, itemsep=0pt] \itemizationRowStyle #4 \end{itemize}
-    \end{minipage} &
+    {\itemizationRowStyle #4} &
     {\itemizationRowStyle \@formatHoursLeft{#2}} &
     {\itemizationRowStyle \@formatHoursRight{#2}} &
     {\itemizationRowStyle #3 \currencysym} &
@@ -238,9 +239,7 @@
 \newcommand{\lineitemp}[5]{
     {\itemizationRowStyle #1} &
     {\itemizationRowStyle #4} &
-    \begin{minipage}[t]{0.5\textwidth}
-        \begin{itemize}[leftmargin=0pt, labelsep=1pt, itemsep=0pt] \itemizationRowStyle #5 \end{itemize}
-    \end{minipage} &
+    {\itemizationRowStyle #5} &
     {\itemizationRowStyle \@formatHoursLeft{#2}} &
     {\itemizationRowStyle \@formatHoursRight{#2}} &
     {\itemizationRowStyle #3 \currencysym} &
