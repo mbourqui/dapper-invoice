@@ -99,7 +99,7 @@
     \begin{minipage}[t]{.6\linewidth} {\headerStyle #1} \end{minipage}
     \hfill
     \begin{tabular}[t]{@{} c @{}}
-        {\headerStyle \invoiceSpacing{xxx} \##2} \\
+        {\headerStyle \invoiceSpacing{Rechnung} \##2} \\
         {\color{subduedColor} \today}
     \end{tabular}
 
