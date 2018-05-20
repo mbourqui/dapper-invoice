@@ -2,10 +2,13 @@
 
 \ProvidesClass{dapper-invoice}[2015/04/12]
 \NeedsTeXFormat{LaTeX2e}
-\LoadClass[11pt]{article}
+\LoadClass[11pt]{scrlttr2}
 
 % For page number calculations
 \RequirePackage{ifthen}
+
+% i18n
+\RequirePackage{babel}
 
 % To handle key=value options in class definition
 \RequirePackage{kvoptions}
@@ -23,7 +26,7 @@
 \ifthenelse{\equal{\dapper@currency}{pound}}{\newcommand{\currencysym}{\textsterling}}{}
 
 % Set the standard geometry
-\RequirePackage[hmargin=.75in,vmargin=1in]{geometry}
+\RequirePackage[hmargin=25mm,vmargin=27mm]{geometry}
 
 % For links and metadata
 \RequirePackage[hidelinks]{hyperref}
@@ -56,7 +59,14 @@
 
 % Formatting numbers
 \RequirePackage{siunitx}
-\sisetup{round-integer-to-decimal, group-separator={,}}
+\sisetup{
+%	round-integer-to-decimal, 
+%	group-separator={,}
+    group-separator = {.},
+    round-mode = places,
+    round-precision = 2,
+    output-decimal-marker = {,}
+}
 
 \RequirePackage{fontspec}
 
@@ -92,7 +102,7 @@
     \begin{minipage}[t]{.6\linewidth} {\headerStyle #1} \end{minipage}
     \hfill
     \begin{tabular}[t]{@{} c @{}}
-        {\headerStyle \invoiceSpacing{INVOICE} \##2} \\
+        {\headerStyle \invoiceSpacing{Rechnung} \##2} \\
         {\color{subduedColor} \today}
     \end{tabular}
 
@@ -136,11 +146,11 @@
     \begin{longtable}{c @{\hspace{1.5em}} p{.6\textwidth} r @{} l r r}
     \hline
     \noalign{\smallskip}
-    {\itemizationHeaderStyle Date} &
-    {\itemizationHeaderStyle Description} &
-    \multicolumn{2}{l}{\itemizationHeaderStyle Hours} &
-    {\itemizationHeaderStyle Rate} &
-    {\itemizationHeaderStyle Amount}
+    {\itemizationHeaderStyle Datum} &
+    {\itemizationHeaderStyle Beschreibung} &
+    \multicolumn{2}{l}{\itemizationHeaderStyle Stunden} &
+    {\itemizationHeaderStyle Einzel} &
+    {\itemizationHeaderStyle Gesamt}
     \\
     \noalign{\smallskip}
     \hline
@@ -161,12 +171,12 @@
     \begin{longtable}{c c @{\hspace{1.5em}} p{.5\textwidth} r @{} l r r}
     \hline
     \noalign{\smallskip}
-    {\itemizationHeaderStyle Date} &
-    {\itemizationHeaderStyle Project} &
-    {\itemizationHeaderStyle Description} &
-    \multicolumn{2}{l}{\itemizationHeaderStyle Hours} &
-    {\itemizationHeaderStyle Rate} &
-    {\itemizationHeaderStyle Amount}
+    {\itemizationHeaderStyle Datum} &
+    {\itemizationHeaderStyle Projekt} &
+    {\itemizationHeaderStyle Beschreibung} &
+    \multicolumn{2}{l}{\itemizationHeaderStyle Stunden} &
+    {\itemizationHeaderStyle Einzel} &
+    {\itemizationHeaderStyle Gesamt}
     \\
     \noalign{\smallskip}
     \hline
@@ -217,13 +227,11 @@
 
 \newcommand{\lineitem}[4]{
     {\itemizationRowStyle #1} &
-    \begin{minipage}[t]{.6\textwidth}
-        \begin{itemize}[leftmargin=0pt, labelsep=1pt, itemsep=0pt] \itemizationRowStyle #4 \end{itemize}
-    \end{minipage} &
+    {\itemizationRowStyle #4} &
     {\itemizationRowStyle \@formatHoursLeft{#2}} &
     {\itemizationRowStyle \@formatHoursRight{#2}} &
-    {\itemizationRowStyle \currencysym#3} &
-    {\itemizationRowStyle \currencysym\calcamount{#2}{#3}}
+    {\itemizationRowStyle #3 \currencysym} &
+    {\itemizationRowStyle \calcamount{#2}{#3} \currencysym}
     \\
     \noalign{\medskip}
 }
@@ -231,13 +239,11 @@
 \newcommand{\lineitemp}[5]{
     {\itemizationRowStyle #1} &
     {\itemizationRowStyle #4} &
-    \begin{minipage}[t]{0.5\textwidth}
-        \begin{itemize}[leftmargin=0pt, labelsep=1pt, itemsep=0pt] \itemizationRowStyle #5 \end{itemize}
-    \end{minipage} &
+    {\itemizationRowStyle #5} &
     {\itemizationRowStyle \@formatHoursLeft{#2}} &
     {\itemizationRowStyle \@formatHoursRight{#2}} &
-    {\itemizationRowStyle \currencysym#3} &
-    {\itemizationRowStyle \currencysym\calcamount{#2}{#3}}
+    {\itemizationRowStyle #3 \currencysym} &
+    {\itemizationRowStyle \calcamount{#2}{#3} \currencysym}
     \\
     \noalign{\medskip}
 }
@@ -262,7 +268,7 @@
 }
 
 \newcommand*{\formatcurrency}[1]{%
-    \num[group-separator={,}, group-minimum-digits=3, round-mode=places, round-precision=2]{#1}%
+    \num[group-minimum-digits=3, round-mode=places, round-precision=2]{#1}%
 }
 
 % Implementation by Werner (http://tex.stackexchange.com/a/176815/35707)
